@@ -1,0 +1,42 @@
+#include "dash.h"
+
+using namespace std;
+
+int main(int argc, char **argv)
+{
+	string input, first, last;
+	bool finished = false;
+	
+	while(finished == false)
+	{
+		cout << "dash>";
+		cin >> input;
+		
+		if(input == "exit" || input == "x" || input == "X")
+		{
+			finished = true;
+		}
+		
+		formatCmd(input, first, last);
+		
+		if(first == "cmdnm")
+		{
+			string commandName = cmdnm(atoi(last.c_str());
+		}
+		else if(first == "pid")
+		{
+			vector<int> pids;
+			get_pid(string last, vector<int> &pids);
+		}
+		else if(first == "systat")
+		{
+			systat();
+		}
+		
+	}
+	
+	
+	
+	
+	return 0;
+}

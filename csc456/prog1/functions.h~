@@ -1,0 +1,12 @@
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
+#include <iostream>
+#include <string>
+#include <sys/syscall.h>
+#include <stdlib.h>
+
+
+
+
+#endif
