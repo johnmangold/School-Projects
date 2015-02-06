@@ -3,7 +3,7 @@ CFLAGS=-std=c++11 -c -Wall
 LDFLAGS=
 SOURCES=dash.cpp functions.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=prog1
+EXECUTABLE=dash
 
 all: $(SOURCES) $(EXECUTABLE)
 	
