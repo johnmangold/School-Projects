@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall
+CFLAGS=-std=c++11 -c -Wall
 LDFLAGS=
 SOURCES=dash.cpp functions.cpp
 OBJECTS=$(SOURCES:.cpp=.o)

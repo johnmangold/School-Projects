@@ -23,16 +23,32 @@ int main(int argc, char **argv)
 		}
 		
 		formatCmd(input, first, last);
-		cout << input << endl << first << endl << last << endl;
 		
 		if(first == "cmdnm")
 		{
 			string commandName = cmdnm(atoi(last.c_str()));
+			
+			if(commandName != "fail fail fail")
+			{	
+				cout << "Parent Name: " << commandName
+					<< endl << endl;
+			}
+			else
+			{
+				cout << "That doesn't seem to be a process."
+					<< endl;
+			}
 		}
 		else if(first == "pid")
 		{
 			vector<int> pids;
 			get_pid(last, pids);
+			
+			for(int i = 0;i < pids.size(); i++)
+			{
+				cout << "PID matching " << last << ": "
+					<< pids[i] << endl; 
+			}
 		}
 		else if(first == "systat")
 		{
