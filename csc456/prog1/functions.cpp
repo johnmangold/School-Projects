@@ -47,6 +47,10 @@ string cmdnm(int pid)
 	
 	name = name[name.length()-1];
 	fin.close();
+	if(name == "0")
+	{
+		return "no parent";
+	}
 	dir = "/proc/" + name + "/status";
 	fin.open(dir);
 	if(!fin)

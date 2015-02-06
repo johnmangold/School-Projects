@@ -28,10 +28,16 @@ int main(int argc, char **argv)
 		{
 			string commandName = cmdnm(atoi(last.c_str()));
 			
-			if(commandName != "fail fail fail")
+			if(commandName != "fail fail fail" &&
+				commandName != "no parent")
 			{	
 				cout << "Parent Name: " << commandName
 					<< endl << endl;
+			}
+			else if(commandName == "no parent")
+			{
+				cout << "This process has no parent." 
+					<< endl;
 			}
 			else
 			{
@@ -44,7 +50,7 @@ int main(int argc, char **argv)
 			vector<int> pids;
 			get_pid(last, pids);
 			
-			for(int i = 0;i < pids.size(); i++)
+			for(unsigned int i = 0;i < pids.size(); i++)
 			{
 				cout << "PID matching " << last << ": "
 					<< pids[i] << endl; 
