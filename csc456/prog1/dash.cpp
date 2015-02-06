@@ -7,6 +7,15 @@ string cmdnm(int pid);
 void get_pid(string last, vector<int> &nums);
 void systat();
 
+/************************************************************************
+   Function: main
+   Author: John Mangold
+   Description: Handles user input and necessary function calls.
+   Parameters: in - int argc - number of command line arguments
+   	       in - char **argv - char array of arguments
+   	       out - int - return -1 if can't open a file
+   			   return 0 if run sucessfully
+ ************************************************************************/
 int main(int argc, char **argv)
 {
 	string input, first, last;
@@ -62,9 +71,6 @@ int main(int argc, char **argv)
 		}
 		
 	}
-	
-	
-	
 	
 	return 0;
 }

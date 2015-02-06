@@ -2,9 +2,15 @@
 
 using namespace std;
 
-//takes user input and splits it into one or two strings
-//parameters in: string input, string &first, string &last
-//parameters out: none, void function
+/************************************************************************
+   Function: formatCmd
+   Author: John Mangold
+   Description: Takes user input and splits it into two separate strings.  The first string is the command name and the second is the variable portion.
+   Parameters: in - string input - entire user input
+	       in - string &first - string for holding command portion
+	       in - string &last - string for holding variable phrase
+	       out - None. Void function.
+ ************************************************************************/
 void formatCmd(string input, string &first, string &last)
 {
 	size_t found = input.find(" ");
@@ -23,9 +29,13 @@ void formatCmd(string input, string &first, string &last)
 
 }//end of formatCmd function
 
-//uses given pid to find parent process name
-//parameters in: int pid
-//parameters out: string name
+/************************************************************************
+   Function: cmdnm
+   Author: John Mangold
+   Description: Checks given process ID and returns the name of the parent process.
+   Parameters: in - int pid - the provided process ID
+   	       out - string name - the parent process name
+ ************************************************************************/
 string cmdnm(int pid)
 {
 	string name;
@@ -66,9 +76,14 @@ string cmdnm(int pid)
 	return name;
 }//end of cmdnm function
 
-//finds all process IDs that contain string last
-//parameters in: string last, vector<in> &nums
-//parameters out: none, void function
+/************************************************************************
+   Function: get_pid
+   Author: John Mangold
+   Description: Checks the names of all running processes to see if they contain a given string.  If the string is found it is added to a running list.
+   Parameters: in - string last - the string to search for
+   	       in - vector<int> &nums - vector to store process IDs
+   	       out - None.  Void function.
+ ************************************************************************/
 void get_pid(string last, vector<int> &nums)
 {
 	string output;
@@ -102,9 +117,13 @@ void get_pid(string last, vector<int> &nums)
 	
 }//end of get_pid function
 
-//prints system information to stdout
-//parameters in: none
-//parameters out: none, void function
+/************************************************************************
+   Function: systat
+   Author: John Mangold
+   Description: Reads various system files to gather system information such as Linux version, uptime, memory information, and cpu information
+   Parameters: in - None.
+   	       out - None.
+ ************************************************************************/
 void systat()
 {
 	string dir;
