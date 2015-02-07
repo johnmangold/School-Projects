@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 			if(commandName != "fail fail fail" &&
 				commandName != "no parent")
 			{	
-				cout << "Parent Name: " << commandName
+				cout << "Command Name: " << commandName
 					<< endl << endl;
 			}
 			else if(commandName == "no parent")

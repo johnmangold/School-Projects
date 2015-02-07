@@ -32,7 +32,7 @@ void formatCmd(string input, string &first, string &last)
 /************************************************************************
    Function: cmdnm
    Author: John Mangold
-   Description: Checks given process ID and returns the name of the parent process.
+   Description: Checks given process ID and returns the command line argument used to initiate the process.
    Parameters: in - int pid - the provided process ID
    	       out - string name - the parent process name
  ************************************************************************/
@@ -42,44 +42,23 @@ string cmdnm(int pid)
 	string dir;
 	ifstream fin;
 	
-	dir = "/proc/" + to_string(pid) + "/status";
+	dir = "/proc/" + to_string(pid) + "/cmdline";
 	fin.open(dir);
 	if(!fin)
 	{
 		cout << "Could not open file." << endl;
 		return "fail fail fail";
 	}//end check if file is good.
-
-	for (int i = 0; i < 6; i++)
-	{
-		getline(fin,name);
-	}//end for loop getting PPID
-	
-	name = name[name.length()-1];
-	fin.close();
-	if(name == "0")
-	{
-		return "no parent";
-	}
-	dir = "/proc/" + name + "/status";
-	fin.open(dir);
-	if(!fin)
-	{
-		cout << "Could not open parent file." << endl;
-		return "fail fail fail";
-	}//end check if file is good.
 	
 	getline(fin,name);
 	fin.close();
-	name = name.substr(6);
-	
 	return name;
 }//end of cmdnm function
 
 /************************************************************************
    Function: get_pid
    Author: John Mangold
-   Description: Checks the names of all running processes to see if they contain a given string.  If the string is found it is added to a running list.
+   Description: Checks the command line argument of each running process searching for the given string.  If the string is found it is added to the vector of ints.
    Parameters: in - string last - the string to search for
    	       in - vector<int> &nums - vector to store process IDs
    	       out - None.  Void function.
@@ -91,30 +70,40 @@ void get_pid(string last, vector<int> &nums)
 	string id;
 	size_t found;
 	ifstream fin;
+	ifstream pin;
 	
-	for(int i = 0;i < 20000;i++)
+	if(last.find_first_not_of("\t\n\v\f\r") != string::npos)
 	{
-		dir = "/proc/" + to_string(i) + "/status";
-		fin.open(dir);
-		if(fin.is_open())
+		for(int i = 0;i < 20000;i++)
 		{
-			getline(fin,output);
-			output = output.substr(6);
-			found = output.find(last);
-			if(found != string::npos)
+			dir = "/proc/" + to_string(i) + "/cmdline";
+			fin.open(dir);
+			if(fin.is_open())
 			{
-				for(int i = 0;i<4;i++)
+				getline(fin,output);
+				if(!output.empty())
 				{
-					getline(fin,id);
+					found = output.find(last);
+					if(found != string::npos)
+					{
+						//open status and get pid
+						dir = "/proc/" + to_string(i) +
+							"/status";
+						pin.open(dir);
+						for(int i = 0;i<5;i++)
+						{
+							getline(pin,id);
+						}
+						pin.close();
+						id = id.substr(6);
+						//add pid to vector
+						nums.push_back(atoi(id.c_str()));
+					}
 				}
-				
-				id = id.substr(5);
-				nums.push_back(atoi(id.c_str()));
 			}
+			fin.close();
 		}
-		fin.close();
 	}
-	
 }//end of get_pid function
 
 /************************************************************************
