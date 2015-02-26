@@ -19,13 +19,44 @@ void systat();
 int main(int argc, char **argv)
 {
 	vector<string> args;
+	size_t index;
 	string line;
 	string arg;
+	stringstream ss;
 	
 	while(true)
 	{
 		cout << "dash>";
+		getline(cin,line);
+		
+		if (line == "exit")
+		{
+			break;
+		}
+		
+		index = line.find_first_not_of(" \t");
+		if(index != string::npos)
+		{
+			line = line.substr(index);
+		}
+		
+		ss << line;
+		while(getline(ss,arg,' '))
+		{
+			if(arg != " " && arg != "\t")
+			{
+				args.push_back(arg);
+			}
+		}
+		ss.clear();
+		for (unsigned int i = 0;i< args.size();i++)
+		{
+			cout << args[i] << endl;
+		}
+		args.clear();
 	}
+	
+	return 0;
 	
 	
 	
