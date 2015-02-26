@@ -18,7 +18,23 @@ void systat();
  ************************************************************************/
 int main(int argc, char **argv)
 {
-	string input, first, last;
+	vector<string> args;
+	string line;
+	string arg;
+	
+	while(true)
+	{
+		cout << "dash>";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/*string input, first, last;
 	bool finished = false;
 	
 	while(finished == false)
@@ -72,5 +88,5 @@ int main(int argc, char **argv)
 		
 	}
 	
-	return 0;
+	return 0;*/
 }
