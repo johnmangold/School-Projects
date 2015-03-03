@@ -30,31 +30,105 @@ bool get_parts(string option, string &first, string &last)
 
 void encode74(string last)
 {
+	int G[7][4] = {{1,1,0,1},
+		       {1,0,1,1},
+		       {1,0,0,0},
+		       {0,1,1,1},
+		       {0,1,0,0},
+		       {0,0,1,0},
+		       {0,0,0,1}};
+		       
+	int H[3][7] = {{1,0,1,0,1,0,1},
+		       {0,1,1,0,0,1,1},
+		       
+		       {0,0,0,1,1,1,1}};
+
+
+	if(last.length() != 4)
+	{
+		cout << "Bit string must be 4 bits.\n";
+		return;
+	}
+	
 	cout << last << endl;
 }
 
 void parity74(string last)
 {
+	int G[7][4] = {{1,1,0,1},
+		       {1,0,1,1},
+		       {1,0,0,0},
+		       {0,1,1,1},
+		       {0,1,0,0},
+		       {0,0,1,0},
+		       {0,0,0,1}};
+		       
+	int H[3][7] = {{1,0,1,0,1,0,1},
+		       {0,1,1,0,0,1,1},
+		       {0,0,0,1,1,1,1}};
+
+	if(last.length() != 7)
+	{
+		cout << "Bit string must be 7 bits.\n";
+		return;
+	}
+
 	cout << last << endl;
 }
 
 void decode74(string last)
 {
+	int G[7][4] = {{1,1,0,1},
+		       {1,0,1,1},
+		       {1,0,0,0},
+		       {0,1,1,1},
+		       {0,1,0,0},
+		       {0,0,1,0},
+		       {0,0,0,1}};
+		       
+	int H[3][7] = {{1,0,1,0,1,0,1},
+		       {0,1,1,0,0,1,1},
+		       {0,0,0,1,1,1,1}};
+
+	if(last.length() != 7)
+	{
+		cout << "Bit string must be 7 bits.\n";
+		return;
+	}
+
 	cout << last << endl;
 }
 
 void encode1511(string last)
 {
+	if(last.length() != 11)
+	{
+		cout << "Bit string must be 11 bits.\n";
+		return;
+	}
+
 	cout << last << endl;
 }
 
 void parity1511(string last)
 {
+	if(last.length() != 15)
+	{
+		cout << "Bit string must be 15 bits.\n";
+		return;
+	}
+
 	cout << last << endl;
 }
 
 void decode1511(string last)
 {
+	if(last.length() != 15)
+	{
+		cout << "Bit string must be 15 bits.\n";
+		return;
+	}
+
 	cout << last << endl;
 }
 
