@@ -4,6 +4,7 @@ using namespace std;
 
 void h74();
 void h1511();
+void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr);
 
 int main(int argc, char** argv)
 {

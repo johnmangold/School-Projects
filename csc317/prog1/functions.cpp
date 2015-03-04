@@ -2,8 +2,45 @@
 
 using namespace std;
 
-//everything works for input.
-//check proper length of bit string when entering encode, parity, decode
+//create functions for matrix multiplication and matrix addition
+
+void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
+{
+	int frow;
+	int fcol;
+	int srow;
+	int scol;
+	vector<vector<int>> answer;
+
+	frow = farr.size();
+	fcol = farr[0].size();
+	
+	srow = sarr.size();
+	scol = sarr[0].size();
+	
+	for (int i=0;i != frow;i++)
+	{
+		for (int j=0;j != scol;j++)
+		{
+			int sum=0;
+			for (int k=0;k != srow;k++)
+			{
+				sum += farr[i][k] * sarr[k][j];
+			}
+			vector<int> row;
+			answer.push_back(row);
+			answer.at(i).push_back(sum);
+		}
+	}
+	
+	/*for(int i=0;i<answer.size();i++)
+	{
+		for(int j=0;j<answer[i].size();j++)
+		{
+			cout << answer[i].at(j) << endl;
+		}
+	}*/
+}
 
 bool get_parts(string option, string &first, string &last)
 {
@@ -30,19 +67,16 @@ bool get_parts(string option, string &first, string &last)
 
 void encode74(string last)
 {
-	int G[7][4] = {{1,1,0,1},
-		       {1,0,1,1},
-		       {1,0,0,0},
-		       {0,1,1,1},
-		       {0,1,0,0},
-		       {0,0,1,0},
-		       {0,0,0,1}};
+	vector<vector<int>> G = {{1,1,0,1},
+				 {1,0,1,1},
+				 {1,0,0,0},
+				 {0,1,1,1},
+				 {0,1,0,0},
+				 {0,0,1,0},
+				 {0,0,0,1}};
 		       
-	int H[3][7] = {{1,0,1,0,1,0,1},
-		       {0,1,1,0,0,1,1},
-		       
-		       {0,0,0,1,1,1,1}};
-
+	vector<vector<int>> p;
+	string piece;
 
 	if(last.length() != 4)
 	{
@@ -50,53 +84,77 @@ void encode74(string last)
 		return;
 	}
 	
-	cout << last << endl;
+	for(int i=0;i<4;i++)
+	{
+		for(int j=0;j<1;j++)
+		{
+			piece = last[i];
+			vector<int> row;
+			p.push_back(row);
+			p[i].push_back(stoi(piece));
+			cout << p[i].at(j) << endl;
+		}
+	}
+	
 }
 
 void parity74(string last)
-{
-	int G[7][4] = {{1,1,0,1},
-		       {1,0,1,1},
-		       {1,0,0,0},
-		       {0,1,1,1},
-		       {0,1,0,0},
-		       {0,0,1,0},
-		       {0,0,0,1}};
+{	       
+	vector<vector<int>> H = {{1,0,1,0,1,0,1},
+		       		 {0,1,1,0,0,1,1},
+		       		 {0,0,0,1,1,1,1}};
 		       
-	int H[3][7] = {{1,0,1,0,1,0,1},
-		       {0,1,1,0,0,1,1},
-		       {0,0,0,1,1,1,1}};
+	vector<vector<int>> r;
+	string piece;
 
 	if(last.length() != 7)
 	{
 		cout << "Bit string must be 7 bits.\n";
 		return;
 	}
+	
+	for(int i=0;i<7;i++)
+	{
+		for(int j=0;j<1;j++)
+		{
+			piece = last[i];
+			vector<int> row;
+			r.push_back(row);
+			r[i].push_back(stoi(piece));
+			cout << r[i][j] << endl;
+		}
+	}
 
-	cout << last << endl;
 }
 
 void decode74(string last)
 {
-	int G[7][4] = {{1,1,0,1},
-		       {1,0,1,1},
-		       {1,0,0,0},
-		       {0,1,1,1},
-		       {0,1,0,0},
-		       {0,0,1,0},
-		       {0,0,0,1}};
+	vector<vector<int>> R = {{0,0,1,0,0,0,0},
+		       		 {0,0,0,0,1,0,0},
+		       		 {0,0,0,0,0,1,0},
+		       		 {0,0,0,0,0,0,1}};
 		       
-	int H[3][7] = {{1,0,1,0,1,0,1},
-		       {0,1,1,0,0,1,1},
-		       {0,0,0,1,1,1,1}};
+	vector<vector<int>> r;
+	string piece;
 
 	if(last.length() != 7)
 	{
 		cout << "Bit string must be 7 bits.\n";
 		return;
 	}
+	
+	for(int i=0;i<7;i++)
+	{
+		for(int j=0;j<1;j++)
+		{
+			piece = last[i];
+			vector<int> row;
+			r.push_back(row);
+			r[i].push_back(stoi(piece));
+			cout << r[i][j] << endl;
+		}
+	}
 
-	cout << last << endl;
 }
 
 void encode1511(string last)
