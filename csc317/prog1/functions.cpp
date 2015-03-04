@@ -186,9 +186,8 @@ void parity74(string last)
 		{
 			index = 3;
 		}
-		
-		if(r[0].at(
 	}
+	
 
 }
 
@@ -200,6 +199,7 @@ void decode74(string last)
 		       		 {0,0,0,0,0,0,1}};
 		       
 	vector<vector<int>> r;
+	vector<vector<int>> message;
 	string piece;
 
 	if(last.length() != 7)
@@ -216,8 +216,27 @@ void decode74(string last)
 		{
 			piece = last[i];
 			r[i].push_back(stoi(piece));
-			cout << r[i][j] << endl;
 		}
+	}
+	
+	matrix_mult(R,r,message);
+	if(message[0].at(0) == -1)
+	{
+		cout 
+		<< "Matrices were not appropriate sizes for multiplication.\n";
+		return;
+	}
+	else
+	{
+		cout << "( ";
+		for(unsigned int i=0;i<message.size();i++)
+		{
+			for(unsigned int j=0;j<message[0].size();j++)
+			{
+				cout << message[i].at(j) << " ";
+			}
+		}
+		cout << ")T\n";
 	}
 
 }
