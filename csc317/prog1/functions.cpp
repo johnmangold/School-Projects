@@ -172,20 +172,33 @@ void parity74(string last)
 	if(syndrome[0].at(0) != 0 || syndrome[1].at(0) != 0 || 
 		syndrome[2].at(0) != 0)
 	{
-		int index;
+		string bin;
+		int off_bit;
 		
-		if(syndrome[0].at(0) != 0)
+		bin.append(to_string(syndrome[0].at(0)));
+		bin.append(to_string(syndrome[1].at(0)));
+		bin.append(to_string(syndrome[2].at(0)));
+		
+		off_bit = bitset<3>(bin).to_ulong();
+		
+		if(r[0].at(off_bit+1) == 1)
 		{
-			index = 1;
+			r[0].at(off_bit+1) = 0;
 		}
-		else if(syndrome[1].at(0) != 0)
+		else
 		{
-			index = 2;
+			r[0].at(off_bit+1) = 1;
 		}
-		else if(syndrome[2].at(0) != 0)
+		
+		cout << "Corrected Message: ( ";
+		for(unsigned int i=0;i<r.size();i++)
 		{
-			index = 3;
+			for(unsigned int j=0;j<r[0].size();j++)
+			{
+				cout << r[i].at(j) << " ";
+			}
 		}
+		cout << ")T\n";
 	}
 	
 
