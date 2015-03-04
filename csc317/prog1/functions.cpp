@@ -2,15 +2,17 @@
 
 using namespace std;
 
-//create functions for matrix multiplication and matrix addition
+//create functions for matrix addition
+//finish parity.  figure out next step after getting syndrome
+//finish decode
 
-void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
+void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr,
+		 vector<vector<int>> &oarr)
 {
 	int frow;
 	int fcol;
 	int srow;
 	int scol;
-	vector<vector<int>> answer;
 
 	frow = farr.size();
 	fcol = farr[0].size();
@@ -18,10 +20,18 @@ void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
 	srow = sarr.size();
 	scol = sarr[0].size();
 	
+	if(fcol != srow)
+	{
+		cout << "Number of columns in first matrix must be equal to\n"
+			<< "the number of rows in the second column.\n";
+		oarr[0].push_back(-1);
+		return;
+	}
+	
 	for (int i=0;i != frow;i++)
 	{
 		vector<int> row;
-		answer.push_back(row);
+		oarr.push_back(row);
 		for (int j=0;j != scol;j++)
 		{
 			int sum=0;
@@ -29,17 +39,9 @@ void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
 			{
 				sum += farr[i][k] * sarr[k][j];
 			}
-			answer.at(i).push_back(sum);
+			oarr.at(i).push_back(sum%2);
 		}
 	}
-	
-	/*for(int i=0;i<answer.size();i++)
-	{
-		for(int j=0;j<answer[i].size();j++)
-		{
-			cout << answer[i].at(j) << endl;
-		}
-	}*/
 }
 
 bool get_parts(string option, string &first, string &last)
@@ -76,6 +78,7 @@ void encode74(string last)
 				 {0,0,0,1}};
 		       
 	vector<vector<int>> p;
+	vector<vector<int>> message;
 	string piece;
 
 	if(last.length() != 4)
@@ -92,8 +95,27 @@ void encode74(string last)
 		{
 			piece = last[i];
 			p[i].push_back(stoi(piece));
-			cout << p[i].at(j) << endl;
 		}
+	}
+	
+	matrix_mult(G,p,message);
+	if(message[0].at(0) == -1)
+	{
+		cout 
+		<< "Matrices were not appropriate sizes for multiplication.\n";
+		return;
+	}
+	else
+	{
+		cout << "( ";
+		for(unsigned int i=0;i<message.size();i++)
+		{
+			for(unsigned int j=0;j<message[0].size();j++)
+			{
+				cout << message[i].at(j) << " ";
+			}
+		}
+		cout << ")T\n";
 	}
 	
 }
@@ -105,6 +127,8 @@ void parity74(string last)
 		       		 {0,0,0,1,1,1,1}};
 		       
 	vector<vector<int>> r;
+	vector<vector<int>> syndrome;
+	vector<vector<int>> fix;
 	string piece;
 
 	if(last.length() != 7)
@@ -116,13 +140,54 @@ void parity74(string last)
 	for(int i=0;i<7;i++)
 	{
 		vector<int> row;
-		p.push_back(row);
+		r.push_back(row);
 		for(int j=0;j<1;j++)
 		{
 			piece = last[i];
 			r[i].push_back(stoi(piece));
 			cout << r[i][j] << endl;
 		}
+	}
+	
+	matrix_mult(H,r,syndrome);
+	if(syndrome[0].at(0) == -1)
+	{
+		cout 
+		<< "Matrices were not appropriate sizes for multiplication.\n";
+		return;
+	}
+	else
+	{
+		cout << "Syndrome Vector: ( ";
+		for(unsigned int i=0;i<syndrome.size();i++)
+		{
+			for(unsigned int j=0;j<syndrome[0].size();j++)
+			{
+				cout << syndrome[i].at(j) << " ";
+			}
+		}
+		cout << ")T\n";
+	}
+	
+	if(syndrome[0].at(0) != 0 || syndrome[1].at(0) != 0 || 
+		syndrome[2].at(0) != 0)
+	{
+		int index;
+		
+		if(syndrome[0].at(0) != 0)
+		{
+			index = 1;
+		}
+		else if(syndrome[1].at(0) != 0)
+		{
+			index = 2;
+		}
+		else if(syndrome[2].at(0) != 0)
+		{
+			index = 3;
+		}
+		
+		if(r[0].at(
 	}
 
 }
@@ -146,7 +211,7 @@ void decode74(string last)
 	for(int i=0;i<7;i++)
 	{
 		vector<int> row;
-		p.push_back(row);
+		r.push_back(row);
 		for(int j=0;j<1;j++)
 		{
 			piece = last[i];
