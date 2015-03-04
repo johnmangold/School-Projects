@@ -6,12 +6,6 @@ void formatCmd(string format, string &first, string &last);
 string cmdnm(int pid);
 void get_pid(string last, vector<int> &nums);
 void systat();
-/******************** prog2 function prototypes *************************/
-void redir_in(char *args[]);
-void redir_out(char *args[]);
-void change(char *args[]);
-void pipe(char *args[]);
-void sig(char *args[]);
 
 /************************************************************************
    Function: main
@@ -24,68 +18,106 @@ void sig(char *args[]);
  ************************************************************************/
 int main(int argc, char **argv)
 {
-	char  line[100]; 
-	char *args[100]; 
-	int   num_args; 
-	int   i;
-	string name;
+	vector<string> args;
+	size_t index;
+	string line;
+	string arg;
+	stringstream ss;
 	
 	while(true)
 	{
 		cout << "dash>";
-		gets(line);
-		if(strcmp(line, "exit" ) == 0)
+		getline(cin,line);
+		
+		if (line == "exit")
 		{
 			break;
 		}
 		
-		num_args = 0;
-		args[num_args] = strtok(line, " ");
-		while (args[num_args] != NULL)
+		index = line.find_first_not_of(" \t");
+		if(index != string::npos)
 		{
-			num_args++;
-			args[num_args] = strtok(NULL, " ");
+			line = line.substr(index);
 		}
-
-		if(num_args >= 1)
+		
+		ss << line;
+		while(getline(ss,arg,' '))
 		{
-			
-			if(strcmp(args[0],"cd") == 0)
+			if(arg != " " && arg != "\t")
 			{
-				change(args);
-			}
-			else if(strcmp(args[0],"signal") == 0)
-			{
-				sig(args);
-			}
-			else if(strcmp(args[0],"cmdnm") == 0)
-			{
-				name = cmdnm(atoi(args[1]));
-				cout << "Command Name: " << name << endl;
-			}
-			else if(strcmp(args[0],"systat") == 0)
-			{
-				systat();
-			}
-			
-			if(num_args >= 2)
-			{
-				if(strcmp(args[1],">") == 0)
-				{
-					redir_in(args);
-				}
-				else if(strcmp(args[1],"<") == 0)
-				{
-					redir_out(args);
-				}
-				else if(strcmp(args[1],"|") == 0)
-				{
-					pipe(args);
-				}
+				args.push_back(arg);
 			}
 		}
-				
+		ss.clear();
+		for (unsigned int i = 0;i< args.size();i++)
+		{
+			cout << args[i] << endl;
+		}
+		args.clear();
 	}
 	
 	return 0;
+	
+	
+	
+	
+	
+	
+	
+	
+	/*string input, first, last;
+	bool finished = false;
+	
+	while(finished == false)
+	{
+		cout << "dash>";
+		getline(cin, input);
+		
+		if(input == "exit" || input == "x" || input == "X")
+		{
+			finished = true;
+		}
+		
+		formatCmd(input, first, last);
+		
+		if(first == "cmdnm")
+		{
+			string commandName = cmdnm(atoi(last.c_str()));
+			
+			if(commandName != "fail fail fail" &&
+				commandName != "no parent")
+			{	
+				cout << "Command Name: " << commandName
+					<< endl << endl;
+			}
+			else if(commandName == "no parent")
+			{
+				cout << "This process has no parent." 
+					<< endl;
+			}
+			else
+			{
+				cout << "That doesn't seem to be a process."
+					<< endl;
+			}
+		}
+		else if(first == "pid")
+		{
+			vector<int> pids;
+			get_pid(last, pids);
+			
+			for(unsigned int i = 0;i < pids.size(); i++)
+			{
+				cout << "PID matching " << last << ": "
+					<< pids[i] << endl; 
+			}
+		}
+		else if(first == "systat")
+		{
+			systat();
+		}
+		
+	}
+	
+	return 0;*/
 }
