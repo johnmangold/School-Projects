@@ -20,6 +20,8 @@ void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
 	
 	for (int i=0;i != frow;i++)
 	{
+		vector<int> row;
+		answer.push_back(row);
 		for (int j=0;j != scol;j++)
 		{
 			int sum=0;
@@ -27,8 +29,6 @@ void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr)
 			{
 				sum += farr[i][k] * sarr[k][j];
 			}
-			vector<int> row;
-			answer.push_back(row);
 			answer.at(i).push_back(sum);
 		}
 	}
@@ -86,11 +86,11 @@ void encode74(string last)
 	
 	for(int i=0;i<4;i++)
 	{
+		vector<int> row;
+		p.push_back(row);
 		for(int j=0;j<1;j++)
 		{
 			piece = last[i];
-			vector<int> row;
-			p.push_back(row);
 			p[i].push_back(stoi(piece));
 			cout << p[i].at(j) << endl;
 		}
@@ -115,11 +115,11 @@ void parity74(string last)
 	
 	for(int i=0;i<7;i++)
 	{
+		vector<int> row;
+		p.push_back(row);
 		for(int j=0;j<1;j++)
 		{
 			piece = last[i];
-			vector<int> row;
-			r.push_back(row);
 			r[i].push_back(stoi(piece));
 			cout << r[i][j] << endl;
 		}
@@ -145,11 +145,11 @@ void decode74(string last)
 	
 	for(int i=0;i<7;i++)
 	{
+		vector<int> row;
+		p.push_back(row);
 		for(int j=0;j<1;j++)
 		{
 			piece = last[i];
-			vector<int> row;
-			r.push_back(row);
 			r[i].push_back(stoi(piece));
 			cout << r[i][j] << endl;
 		}
