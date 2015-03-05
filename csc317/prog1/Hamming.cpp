@@ -4,9 +4,14 @@ using namespace std;
 
 void h74();
 void h1511();
-void matrix_mult(vector<vector<int>> farr, vector<vector<int>> sarr,
-		 vector<vector<int>> &oarr);
 
+/************************************************************************
+   Function: int main(int argc,char** argv)
+   Author: John Mangold
+   Description: Handles user input and appropriate function calls
+   Parameters: in - int argc - count of arguments
+   	       in - char** argv - actual arguments
+ ************************************************************************/
 int main(int argc, char** argv)
 {
 	string input;
