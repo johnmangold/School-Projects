@@ -207,9 +207,9 @@ void parity74(string last)
 		string bin;
 		int off_bit;
 		
-		bin.append(to_string(syndrome[0].at(0)));
-		bin.append(to_string(syndrome[1].at(0)));
 		bin.append(to_string(syndrome[2].at(0)));
+		bin.append(to_string(syndrome[1].at(0)));
+		bin.append(to_string(syndrome[0].at(0)));
 		
 		off_bit = bitset<3>(bin).to_ulong();
 		
@@ -421,10 +421,10 @@ void parity1511(string last)
 		string bin;
 		int off_bit;
 		
-		bin.append(to_string(syndrome[0].at(0)));
-		bin.append(to_string(syndrome[1].at(0)));
-		bin.append(to_string(syndrome[2].at(0)));
 		bin.append(to_string(syndrome[3].at(0)));
+		bin.append(to_string(syndrome[2].at(0)));
+		bin.append(to_string(syndrome[1].at(0)));
+		bin.append(to_string(syndrome[0].at(0)));
 		
 		off_bit = bitset<4>(bin).to_ulong();
 		
