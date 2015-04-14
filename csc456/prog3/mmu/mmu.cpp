@@ -18,15 +18,19 @@ struct location_info
 {
 	int pid;
 	int frame;
+	bool in_main;
 };
 
 int main(int argc, char** argv)
 {
 	string num_swaps;
 	vector<virtual_info> virtual_memory(256); //2^16/2^8 = 2^8 virutal pages
-	vector<location_info> tlb;  //must check that it doesn't contain more than 2^5
+	vector<location_info> tlb(32);  //must check that it doesn't contain more than 2^5
 	vector<location_info> page_table(256); //page table matches virtual so 2^6
 	vector<physical_info> physical_memory(128); //(2^15)/2^8=128 frames
+	virtual_info virtual_entry;
+	physical_info physical_entry;
+	
 
 	cout << "Enter the number of desired page swaps: ";
 	getline(cin, num_swaps);
@@ -43,22 +47,53 @@ int main(int argc, char** argv)
 	//fill virutal_memory with addresses
 	for(int i = 0; i< 256;i++)
 	{
-		virtual_memory[i].pid=i;
-		virtual_memory[i].data=rand();
+		virtual_info temp_virtual;
+		temp_virtual.pid=i;
+		temp_virtual.data=rand();
+		virtual_memory[i] = temp_virtual;
 	}
 	
 	//fill physical_memory with random processes and addresses
 	//fix this by making it random for numbers below 
 	for(int i = 0;i< 128;i++)
 	{
-		physical_memory[i].frame=i;
-		physical_memory[i].data = virtual_memory[(rand()%256)].data;
+		physical_info temp_physical;
+		location_info temp_location;
+		virtual_info temp_virtual;
+		location_info temp;
+		
+		//get frame for page table and physical memory
+		temp_physical.frame=i;
+		temp_location.frame = i;
+		
+		//get data for physical memory
+		temp_virtual = virtual_memory[(rand()%256)];
+		temp_physical.data = temp_virtual.data;
+		//set entry in physical memory array
+		physical_memory[i] = temp_physical;
+		
+		//get pid for page table and set to in_main to true
+		temp_location.pid = temp_virtual.pid;
+		temp_location.in_main = true;
+		page_table[i] = temp_location;
 		
 		//use pushback so things are queued
 		if(size(tlb) < 32)
 		{
-			tlb.pid=virtual_memory[i].pid;
-			tlb.frame=physical_memory[i].frame;
+			temp.pid = temp_virtual.pid;
+			temp.frame = i;
+			temp.in_main = true;
+			tlb[31-i] = temp;
+		}
+		else
+		{
+			temp.pid = temp_virtual.pid;
+			temp.frame = i;
+			temp.in_main = true;
+		
+			//remove last element and place new one in front
+			tlb.pop_back();
+			tlb.insert(0, temp);
 		}
 	}
 	
