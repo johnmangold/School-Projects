@@ -23,10 +23,10 @@ struct location_info
 int main(int argc, char** argv)
 {
 	string num_swaps;
-	map<int, address> virtual_memory; //2^32/4096(2^12) = 2^20 virutal pages
-	map<int, int> tlb;  //must check that it doesn't contain more than 2^10
-	map<int, int> page_table; //page table matches virtual so 2^20
-	map<int, int> physical_memory; //1gb(2^20)/4096=256 frames
+	vector<virtual_info> virtual_memory(256); //2^16/2^8 = 2^8 virutal pages
+	vector<location_info> tlb;  //must check that it doesn't contain more than 2^5
+	vector<location_info> page_table(256); //page table matches virtual so 2^6
+	vector<physical_info> physical_memory(128); //(2^15)/2^8=128 frames
 
 	cout << "Enter the number of desired page swaps: ";
 	getline(cin, num_swaps);
@@ -36,18 +36,30 @@ int main(int argc, char** argv)
 		cout << "Please only enter digits.  No letters or spaces.\n";
 		return -1;
 	}
+	
+	//seed random generator
+	srand(time(NULL));
 
 	//fill virutal_memory with addresses
-	for(long long int i = 0; i< pow(2,16);i++)
+	for(int i = 0; i< 256;i++)
 	{
-		virtual_memory[i]=i;
+		virtual_memory[i].pid=i;
+		virtual_memory[i].data=rand();
 	}
 	
 	//fill physical_memory with random processes and addresses
-	//fix this by making it random for numbers below 2^32
-	for(int i = 0;i< pow(2,10);i++)
+	//fix this by making it random for numbers below 
+	for(int i = 0;i< 128;i++)
 	{
-		physical_memory[i] = i;
+		physical_memory[i].frame=i;
+		physical_memory[i].data = virtual_memory[(rand()%256)].data;
+		
+		//use pushback so things are queued
+		if(size(tlb) < 32)
+		{
+			tlb.pid=virtual_memory[i].pid;
+			tlb.frame=physical_memory[i].frame;
+		}
 	}
 	
 	//now begin swapping
@@ -59,3 +71,27 @@ int main(int argc, char** argv)
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
