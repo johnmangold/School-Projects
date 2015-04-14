@@ -2,13 +2,31 @@
 
 using namespace std;
 
+struct virtual_info
+{
+	int pid;
+	int data;
+};
+
+struct physical_info
+{
+	int frame;
+	int data;
+};
+
+struct location_info
+{
+	int pid;
+	int frame;
+};
+
 int main(int argc, char** argv)
 {
 	string num_swaps;
-	map<long long int, long long int> virtual_memory; //given 2^32 processes
+	map<int, address> virtual_memory; //2^32/4096(2^12) = 2^20 virutal pages
 	map<int, int> tlb;  //must check that it doesn't contain more than 2^10
-	map<int, int> page_table; //page size 512kb so 2^13 for page table
-	map<int, int> physical_memory; //4GB(2^12)
+	map<int, int> page_table; //page table matches virtual so 2^20
+	map<int, int> physical_memory; //1gb(2^20)/4096=256 frames
 
 	cout << "Enter the number of desired page swaps: ";
 	getline(cin, num_swaps);
@@ -20,14 +38,14 @@ int main(int argc, char** argv)
 	}
 
 	//fill virutal_memory with addresses
-	for(long long int i = 0; i< pow(2,32);i++)
+	for(long long int i = 0; i< pow(2,16);i++)
 	{
 		virtual_memory[i]=i;
 	}
 	
 	//fill physical_memory with random processes and addresses
 	//fix this by making it random for numbers below 2^32
-	for(int i = 0;i< pow(2,12);i++)
+	for(int i = 0;i< pow(2,10);i++)
 	{
 		physical_memory[i] = i;
 	}
