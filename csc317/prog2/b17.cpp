@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void parse_file(ifstream &fin);
+string parse_file(ifstream &fin);
 
 struct cell
 {
@@ -14,6 +14,7 @@ int main( int argc, char** argv )
 {
 	vector<cell> memory(4096);
 	ifstream object_fin;
+	string start_address;
 	
 	if(argc < 2 || argc > 2 )
 	{
@@ -28,7 +29,7 @@ int main( int argc, char** argv )
 		return -2;
 	}
 	
-	parse_file(object_fin, memory);
+	start_address = parse_file(object_fin, memory);
 	
 	
 	
