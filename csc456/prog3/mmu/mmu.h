@@ -8,5 +8,23 @@
 #include <math.h>
 #include <time.h>
 
+struct virtual_info
+{
+	int pid;
+	int data;
+};
+
+struct physical_info
+{
+	int frame;
+	int data;
+};
+
+struct location_info
+{
+	int pid;
+	int frame;
+	bool in_main;
+};
 
 #endif
