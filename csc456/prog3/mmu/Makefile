@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-std=c++11 -c -Wall
 LDFLAGS=
-SOURCES=mmu.cpp mmuFunctions.cpp
+SOURCES=mmu.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=mmu
 

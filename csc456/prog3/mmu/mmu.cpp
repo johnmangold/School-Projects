@@ -143,7 +143,6 @@ int main(int argc, char** argv)
 			{
 				if(virtual_page.pid == page_table[j].pid && page_table[j].in_main == true)
 				{
-					hit = true;
 					page_hit++;
 					tlb.pop_back();
 					tlb.insert(tlb.begin(),page_table[j]);
@@ -159,6 +158,7 @@ int main(int argc, char** argv)
 						if(page_table[k].frame == physical_memory[index].frame)
 						{
 							page_table[k].in_main = false;
+							page_table[k].frame = -1;
 							break;
 						}
 					}
@@ -174,11 +174,10 @@ int main(int argc, char** argv)
 						if(tlb[k].frame == physical_memory[index].frame)
 						{
 							tlb.erase(tlb.begin()+k);
+							tlb.insert(tlb.begin(),page_table[j]);
 							break;
 						}
 					}
-					
-					tlb.insert(tlb.begin(),page_table[j]);
 				}
 			}
 		}
@@ -186,6 +185,14 @@ int main(int argc, char** argv)
 
 	//surprisingly this all works.
 	//print statistics and look at adding in options to run larger settings maybe
+	
+	cout << "\nTLB Misses: " << tlb_miss
+	     << "\nTLB Hits: " << tlb_hit
+	     << "\nPage Hits: " << page_hit
+	     << "\nPage Faults: " << page_fault
+	     << endl;
+	
+	cout << "\nPercentage of TLB Misses: " << (float) tlb_miss/stoi(num_swaps)*100 << endl << "Percentage of TLB Hits: " << (float) tlb_hit/stoi(num_swaps)*100 << endl << "Percentage of Page Table Hits on TLB Miss only: " << (float) page_hit/tlb_miss*100 << endl <<  "Percentage of Page Faults on TLB Miss only: " << (float) page_fault/tlb_miss*100 << endl << "Percentage of Page Hits Total Swaps: " << (float) page_hit/stoi(num_swaps)*100 << endl << "Percentage of Page Faults Total Swaps: " << (float) page_fault/stoi(num_swaps)*100 << endl << endl;
 
 	return 0;
 }
