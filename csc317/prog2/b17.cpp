@@ -2,21 +2,15 @@
 
 using namespace std;
 
-string parse_file(ifstream &fin);
-
-struct cell
-{
-	string operand_address;
-	string opcode;
-};
+string parse_file(ifstream &fin, vector<string> &mem);
 
 int main( int argc, char** argv )
 {
-	vector<cell> memory(4096);
+	vector<string> memory(4096);
 	ifstream object_fin;
 	string start_address;
 	
-	if(argc < 2 || argc > 2 )
+	if(argc != 2 )
 	{
 		cout << "Incorrect usage.  Correct usage: b17 prog.obj\n";
 		return -1;
@@ -30,6 +24,14 @@ int main( int argc, char** argv )
 	}
 	
 	start_address = parse_file(object_fin, memory);
+	
+	for (int i=0;i < memory.size();i++)
+	{
+		if(!memory[i].empty())
+		{
+			cout << memory[i] << endl;
+		}
+	}
 	
 	
 	
