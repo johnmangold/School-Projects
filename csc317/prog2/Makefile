@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-std=c++11 -c -Wall
 LDFLAGS=
-SOURCES=mmu.cpp
+SOURCES=b17.cpp b17_functions.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=mmu
+EXECUTABLE=b17
 
 all: $(SOURCES) $(EXECUTABLE)
 	
