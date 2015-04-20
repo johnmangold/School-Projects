@@ -1,7 +1,5 @@
 #include "b17.h"
 
-using namespace std;
-
 string parse_file(ifstream &fin, vector<string> &mem)
 {
 	string line;

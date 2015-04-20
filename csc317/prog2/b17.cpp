@@ -1,9 +1,5 @@
 #include "b17.h"
 
-using namespace std;
-
-string parse_file(ifstream &fin, vector<string> &mem);
-
 int main( int argc, char** argv )
 {
 	vector<string> memory(4096);
@@ -25,7 +21,7 @@ int main( int argc, char** argv )
 	
 	start_address = parse_file(object_fin, memory);
 	
-	for (int i=0;i < memory.size();i++)
+	for (int i=stoi(start_address,nullptr,16);!memory[i].empty();i++)
 	{
 		if(!memory[i].empty())
 		{

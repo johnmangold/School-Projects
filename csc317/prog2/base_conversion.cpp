@@ -14,6 +14,7 @@
     hextodec >> x;
 
 */
+#include "b17.h"
 
 string hex_to_bin( string hex ) {
     string bin;
