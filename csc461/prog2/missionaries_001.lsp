@@ -25,7 +25,9 @@ Modifications:
 
 ; load DFS routine and ascii art from external files
 (load 'ascii)
-(load 'dfs)
+;(load 'search_windows)
+(load 'search)
+(load 'print)
 
 ;-------------------------------------------------------------------------------
 
@@ -54,9 +56,8 @@ Modifications:
 	(setf *C* c)
 
 	; solve missionary/cannibal problem using DFS
-	(format t "left bank 	right bank	canoe		last move~%")
-	(format t "--------- 	---------- 	----- 		---------~%")
-	(format t "~A~%"  (dfs(start-state)))
+
+	(print_mc (dfs (start-state)))
 
 	; suppress printing NIL upon return to interpreter
 	(values)
@@ -67,6 +68,7 @@ Modifications:
 
 ; Define the goal state
 (defun goal-state? (state)
+	(when (equal state nil) (return-from goal-state? nil))
 	(and (= (car state) 0) (= (cadr state) 0) (string= (caddr state) "right"))
 )
 
@@ -81,8 +83,6 @@ Modifications:
 	
 		; moves if canoe is on left bank
 		(when (string= bank "left")
-			;(format t "~dm ~dc |\\_/      | ~dm ~dc~%" ml cl mr cr)
-			
 			; 1 missionary right
 			(when (and (>= ml 1)
 					   (or (>= (- ml 1) cl)
@@ -119,8 +119,6 @@ Modifications:
 		
 		; moves if canoes is on right bank
 		(when (string= bank "right")
-			;(format t "~dm ~dc |      \\_/| ~dm ~dc~%" ml cl mr cr)
-			
 			; 1 missionary left
 			(when (and (>= mr 1)
 					   (or (>= (- mr 1) cr)
@@ -154,12 +152,21 @@ Modifications:
 				(setq succs (cons (list (+ ml 1) (+ cl 1) "left") succs)))
 		)
 		
-		; return list of successors, without duplicates
-		(remove-duplicates succs :test #'equal)
+		; return list of successors
+		(return-from generate-successors succs)
 	)
 )
 
 ;-------------------------------------------------------------------------------
+#|
+(defun print_state (state)
+
+
+	(dolist (node state)
+		(format t "~d~d~a~%" 
+			(car node) (cadr node) (caddr node))
+	)
+|#
 
 ; print usage statement automatically upon loading file
 (usage)
