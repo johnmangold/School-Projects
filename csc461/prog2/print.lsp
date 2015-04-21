@@ -1,3 +1,13 @@
+#|
+	Author: John Mangold, Murray Lahood-Burns
+	Description: Given a list of states, it prints the states from start
+		     to finish properly formatted.  Displays number of cannibals
+		     and missionaries on left bank, on right bank, position of
+		     the canoe, and a statement of the number of people moved
+		     and to which bank.
+	Arguments: state
+	Returns: None
+|#
 (defun print_mc (state)
 	(format t "left bank    right bank    canoe    last move~%")
 	(format t "---------    ----------    -----    ---------~%")

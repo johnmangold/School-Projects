@@ -1,3 +1,12 @@
+#|
+	Author: Murray Lahood-Burns
+	Description: Given state the function will generate all possible
+		     successors and does a recursive call.  All returns
+		     get appended to the initial list and if the goal is reached
+		     it is returned from the function.
+	Argument: state
+	Returns: path - list containing the states leading to the goal
+|#
 (defun dfs(state)
 	; format start-state into a list
 	(when (equal (list "left") (last state))
@@ -24,6 +33,14 @@
 	nil
 )
 
+#|
+	Author: Murray Lahood-Burns
+	Description: Checks a list of states to see if an entry is already
+		     present.
+	Arguments: child - the state to check the list for.
+		   path - the list containing all the states
+	Returns: t if child is found in list, nil if child is not found
+|#
 (defun find_child (child path)
 	; check path if child already exists
 	(dolist (i path)

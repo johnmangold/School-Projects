@@ -1,3 +1,9 @@
+#|
+	Author: Murray Lahood-Burns
+	Description: This prints a ascii art picture when the cannibals begin the
+		     game outnumbering the missionaries.
+	Arguments: None
+|#
 (defun defeat()
 (format t "~%")
 (format t "                                     ____~%")

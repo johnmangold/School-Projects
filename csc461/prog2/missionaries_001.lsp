@@ -8,6 +8,7 @@ shore has 1 or more missionaries out numbered by cannibals, the cannibals will
 eat them. Calls DFS search routine in search.lsp, and ascii art in ascii.lsp.
 
 Usage: clisp missionaries
+Usage within clisp interpreter: (load 'missionaries)
 
 Authors: John Mangold, Murray LaHood-Burns
 Written Spring 2015 for CSC461 PL class, programming assignment 2.
@@ -25,15 +26,19 @@ Modifications:
 
 ; load DFS routine and ascii art from external files
 (load 'ascii)
-;(load 'search_windows)
 (load 'search)
 (load 'print)
 
 ;-------------------------------------------------------------------------------
 
 ; usage statement displayed at file load time
-(defun usage ()
-	(format t "~%This is a recursive solution to the missionaries and ~%")
+#|
+	Author: John Mangold
+	Description: Prints a description and usage for the program.
+	Arguments: None
+|#
+(defun initial_usage ()
+	(format t "~%~%This is a recursive solution to the missionaries and ~%")
 	(format t "cannibals problem.  It uses a depth first search to solve ~%")
 	(format t "the problem.~%~%")
 	(format t "Usage: (m-c m c)~%")
@@ -44,9 +49,19 @@ Modifications:
 ;-------------------------------------------------------------------------------
 
 ; Missionary and Cannibal Problem
+#|
+	Author: Murray Lahood-Burns, John Mangold
+	Description: First function to call.  Handles all other function calls.
+		     Sets variables then calls a depth first search which returns
+		     a list which is then passed to the print function which
+		     prints everything out.
+	Arguments: m - starting number of missionaries on left bank
+		   c - starting number of cannibals on right bank
+	Returns: None
+|#
 (defun m-c (m c)
 	; variable check
-	(format t "There are ~d missionaries and ~d cannibals.~%" m c )
+	(format t "~%There are ~d missionaries and ~d cannibals.~%~%" m c )
 
 	; check for unsolvable problem instance
 	(when (< m c) (defeat) (return-from m-c "The cannibals have feasted!!!"))
@@ -64,15 +79,34 @@ Modifications:
 )
 
 ; Define the start state
+#|
+	Author: John Mangold
+	Description: Generates the initial state for the game
+	Arguments: None
+	Returns: start state list
+|#
 (defun start-state () (list *M* *C* "left" ) )
 
 ; Define the goal state
+#|
+	Author: John Mangold
+	Description: Checks the given state to see if it matches the goal state.
+	Arguments: state
+	Returns: t if states match, nil if states do not match
+|#
 (defun goal-state? (state)
 	(when (equal state nil) (return-from goal-state? nil))
 	(and (= (car state) 0) (= (cadr state) 0) (string= (caddr state) "right"))
 )
 
 ; Generate-successors returns a list of successors to the current state.
+#|
+	Author: Murray Lahood-Burns
+	Description: Given state it generates every possible successor state.
+	Arguments: state
+	Returns: succs - list containing the next possible states
+		     
+|#
 (defun generate-successors (state)
 	; define local variables
 	(let ( (ml (car state)) (cl (cadr state)) (bank (caddr state)) mr cr
@@ -158,15 +192,6 @@ Modifications:
 )
 
 ;-------------------------------------------------------------------------------
-#|
-(defun print_state (state)
-
-
-	(dolist (node state)
-		(format t "~d~d~a~%" 
-			(car node) (cadr node) (caddr node))
-	)
-|#
 
 ; print usage statement automatically upon loading file
-(usage)
+(initial_usage)
