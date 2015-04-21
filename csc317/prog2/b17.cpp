@@ -25,6 +25,11 @@ int main( int argc, char** argv )
 	{
 		if(!memory[i].empty())
 		{
+			//We need to process each instrtuction as it comes
+			//call the split function
+			//check the opcode and address mode
+			//perform action
+			//call print function
 			cout << memory[i] << endl;
 		}
 	}
