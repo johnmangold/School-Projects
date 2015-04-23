@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 
+
 using namespace std;
 
 int opcode[22] = {0,1,16,17,18,24,25,26,32,33,34,35,36,37,38,40,41,42,48,49,50,51};
@@ -14,9 +15,16 @@ string address[5] = {"Direct", "Immediate", "Indexed","Indirect","Indexed Indire
 void print_instruction(int t_opcode);
 void print_address_mode(int t_mode_code);
 void check_address_modes(int t_opcode, int t_mode_code);
+void bin_to_deci(string second, int &t_opcode, int &t_mode_code);
+void op_bin_to_deci(string op_string, int &t_opcode);
+void ad_bin_to_deci( string ad_string, int &t_mode_code);
 
 int main()
 {
+	int t_opcode = 0,t_mode_code = 0;
+	string second1 = "010000000100"; //404
+	string second2 = "100000000000"; //800
+	string second3 = "100001000000"; //840
 	int t_opcode_1 = 16;
 	int t_opcode_2 = 32;
 	int t_opcode_3 = 33;
@@ -45,7 +53,22 @@ int main()
 	cout<<endl;
 	check_address_modes(3, t_mode_code_2);
 	cout<<endl;
-	check_address_modes(16, 3);
+	check_address_modes(24, 2);
+	cout<<endl;
+
+	
+	bin_to_deci(second1, t_opcode, t_mode_code);
+	print_instruction(t_opcode);
+	print_address_mode(t_mode_code);
+
+	bin_to_deci(second2, t_opcode, t_mode_code);
+	print_instruction(t_opcode);
+	print_address_mode(t_mode_code);
+
+	bin_to_deci(second3, t_opcode, t_mode_code);
+	print_instruction(t_opcode);
+	print_address_mode(t_mode_code);
+	
 
 	return 1;
 }
@@ -132,4 +155,33 @@ void check_address_modes(int t_opcode, int t_mode_code)
 		cout<<"unimplemented addressing mode"<<endl;
 	}
 	return;
+}
+
+void bin_to_deci(string second, int &t_opcode, int &t_mode_code)
+{
+	t_opcode = 0;
+	t_mode_code = 0;
+	for (int i = 9;i >=6; i--)
+		t_mode_code += int ( (second[i]-48) * pow(2.0, 9-i));
+	
+	for (int i = 5; i >= 0; i--)
+		t_opcode += int ((second[i]-48) * pow ( 2.0 ,5-i));
+		
+	cout<<t_mode_code<<" "<<t_opcode<<endl;
+}
+
+void op_bin_to_deci(string op_string, int &t_opcode)
+{
+	t_opcode = 0;
+	for (int i = 5; i >= 0; i--)
+		t_opcode += int ((op_string[i]-48) * pow ( 2.0 ,5-i));
+	cout<<t_opcode<<endl;
+}
+
+void ad_bin_to_deci(string ad_string, int &t_mode_code)
+{
+	t_mode_code = 0;
+	for (int i = 3; i >= 0; i--)
+		t_mode_code += int ((ad_string[i]-48) * pow ( 2.0 ,3-i));
+	cout<<t_mode_code<<endl;
 }
