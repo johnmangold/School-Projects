@@ -101,6 +101,14 @@ void action(vector<string> memory, string op, string &op_name, string address_mo
 	else if (op == "100001")
 	{
 		//perform sub
+		int temp;
+		stringstream decimal;
+		//perform add
+		address = operand_address;
+		op_name = "ADD";
+		temp = stoi(accumulator, nullptr, 16) - stoi(memory[stoi(operand_address,nullptr,16)], nullptr, 16);
+		decimal << hex << temp;
+		accumulator = decimal.str();
 	}
 	else if (op == "110001")
 	{
