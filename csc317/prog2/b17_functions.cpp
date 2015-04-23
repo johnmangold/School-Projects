@@ -44,15 +44,17 @@ string parse_file(ifstream &fin, vector<string> &mem)
 	return start;
 }
 
-void print_line(string address, string instruction, string op_name, string address_mode, string accumulator_hex, 
-	string x0_hex, string x1_hex, string x2_hex, string x3_hex)
+void print_line(string address, string instruction, string op_name, string address_mode, string accumulator_hex)
 {
-	printf("%03s:  %s  %s  %s  AC[%06s]  X0[%03s]  X1[%03s]  X2[%03s]  X3[%03s]", address.c_str(), instruction.c_str(), op_name.c_str(), address_mode.c_str(), accumulator_hex.c_str(), x0_hex.c_str(), x1_hex.c_str(), x2_hex.c_str(), x3_hex.c_str());
+	printf("%03s:  %s  %3s  %s  AC[%06s]  X0[%03d]  X1[%03d]  X2[%03d]  X3[%03d]", address.c_str(), instruction.c_str(), op_name.c_str(), address_mode.c_str(), accumulator_hex.c_str(), 0, 0, 0, 0);
 }
 
-void action(vector<string> memory, string op, string &op_name, string address_mode, string &accumulator, 
-	string &x0, string &x1, string &x2, string &x3, string operand_address, string &address) //more parameters needed to pass back values
+void action(vector<string> memory, string op, string &op_name, string address_mode, string &accumulator, string operand_address, string &address) //more parameters needed to pass back values
 {
+	//andrew: nop, or, xor, clr, and, com
+	//yan: j, jp, jn, jz
+	//john: st, em, sub, 
+
 	//check and set address portion
 	if (address_mode == "0001")
 	{
