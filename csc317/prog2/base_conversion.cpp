@@ -1,19 +1,3 @@
-/*
-
-  INSTEAD OF CREATING A FUNCTION TO CONVERT HEX TO DEC, I FOUND A WAY TO AVOID ALL THAT.
-  THE FOLLOWING WILL CONVERT A HEX STRING TO AN INT. FOR EXAMPLE, IF STRING HEX IS 1FF,
-  THEN X WILL BE 511. MAKE SURE YOU ADD THE #INCLUDE
-
-#include <sstream>
-
-    string hex;
-    int x;
-
-    std::stringstream hextodec;
-    hextodec << std::hex << hex;
-    hextodec >> x;
-
-*/
 #include "b17.h"
 
 string hex_to_bin( string hex ) {
