@@ -27,6 +27,8 @@ int main( int argc, char** argv )
 	
 	start_address = parse_file(object_fin, memory);
 
+	cout << "\n**********" << memory[80] << "***************\n";
+
 	for (int i=stoi(start_address,nullptr,16);!memory[i].empty();i++)
 	{
 		if(!memory[i].empty())
@@ -36,6 +38,7 @@ int main( int argc, char** argv )
 			split_instruction(memory[i], operand_address, opcode);
 			operand = memory[stoi(operand_address,nullptr,16)];
 			get_op_and_am(opcode, op, address_mode);
+
 			//check the opcode and address mode
 			//must check in this order
 			//halt instruction, undefined opcode, unimplemented opcode,
@@ -43,8 +46,8 @@ int main( int argc, char** argv )
 			//simply create halt function and type in appropriate message
 			//within if to catch each of the four bad halts
 			//perform action
-			//action(op, op_name, address_mode, accumulator,
-				//x0, x1, x2, x3, operand_address, address);
+			action(memory, op, op_name, address_mode, accumulator, x0, x1, x2, x3, operand_address, address);
+
 			//call print function
 			print_line(operand_address, memory[i], op_name, address, accumulator,
 				x0, x1, x2, x3);

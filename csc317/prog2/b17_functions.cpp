@@ -30,8 +30,8 @@ string parse_file(ifstream &fin, vector<string> &mem)
 			
 			for( int i = 0; i < stoi(instruction_count); i++)
 			{
-				mem[address_decimal + i] = instruction.substr(0,instruction.find_first_of(" "));
-				instruction = instruction.substr(instruction.find_first_of(" ")+1);
+					mem[address_decimal + i] = instruction.substr(0, instruction.find_first_of(" "));
+					instruction = instruction.substr(instruction.find_first_of(" ") + 1);
 			}
 		}
 		else
@@ -63,8 +63,8 @@ void action(vector<string> memory, string op, string &op_name, string address_mo
 	if (op == "000000")
 	{
 		//perform halt
-		cout << "Machine Halted - HALT instruction executed" << endl;
-		exit(EXIT_SUCCESS);
+		op_name = "HALT";
+		address = "   ";
 	}
 	else if (op == "010000")
 	{
