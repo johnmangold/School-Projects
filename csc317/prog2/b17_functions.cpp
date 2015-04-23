@@ -44,25 +44,45 @@ string parse_file(ifstream &fin, vector<string> &mem)
 	return start;
 }
 
-void print_line(string address, string instruction, string opcode, string address_mode, string accumulator_hex, 
+void print_line(string address, string instruction, string op_name, string address_mode, string accumulator_hex, 
 	string x0_hex, string x1_hex, string x2_hex, string x3_hex)
 {
-	printf("%03s:  %s  %s  %s  AC[%06s]  X0[%03s]  X1[%03s]  X2[%03s]  X3[%03s]", address.c_str(), instruction.c_str(), opcode.c_str(), address_mode.c_str(), accumulator_hex.c_str(), x0_hex.c_str(), x1_hex.c_str(), x2_hex.c_str(), x3_hex.c_str());
+	printf("%03s:  %s  %s  %s  AC[%06s]  X0[%03s]  X1[%03s]  X2[%03s]  X3[%03s]", address.c_str(), instruction.c_str(), op_name.c_str(), address_mode.c_str(), accumulator_hex.c_str(), x0_hex.c_str(), x1_hex.c_str(), x2_hex.c_str(), x3_hex.c_str());
 }
 
-void action(string op) //more parameters needed to pass back values
+void action(vector<string> memory, string op, string &op_name, string address_mode, string &accumulator, 
+	string &x0, string &x1, string &x2, string &x3, string operand_address, string &address) //more parameters needed to pass back values
 {
+	//check and set address portion
+	if (address_mode == "0001")
+	{
+		address = "IMM";
+	}
+
+	//check op and perform necessary action
 	if (op == "000000")
 	{
 		//perform halt
+		cout << "Machine Halted - HALT instruction executed" << endl;
+		exit(EXIT_SUCCESS);
 	}
 	else if (op == "010000")
 	{
 		//perform load
+		accumulator = operand_address;
+		op_name = "LD";
 	}
 	else if (op == "100000")
 	{
+		int temp;
+		stringstream decimal;
 		//perform add
+		address = operand_address;
+		op_name = "ADD";
+		temp = stoi(accumulator, nullptr, 16) + stoi(memory[stoi(operand_address,nullptr,16)], nullptr, 16);
+		decimal << hex << temp;
+		accumulator = decimal.str();
+
 	}
 	else if (op == "110000")
 	{
@@ -146,11 +166,15 @@ void action(string op) //more parameters needed to pass back values
 		//call halt("Machine Halted - undefined opcode")
 		//this will print to screen and stop simulation
 		//perform halt due to undefined opcode.  print undefined opcode
+		cout << "Machine Halted - undefined opcode" << endl;
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		//call halt("Machine Halted - unimplemented opcode")
 		//this will print to screen and stop simulation
 		//perform halt due to unimplemented opcode.  print unimplemented opcode.
+		cout << "Machine Halted - unimplemented opcode" << endl;
+		exit(EXIT_SUCCESS);
 	}
 }

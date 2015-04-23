@@ -10,6 +10,7 @@ int main( int argc, char** argv )
 	string opcode;
 	string op;
 	string address_mode;
+	string op_name, address, accumulator, x0, x1, x2, x3;
 	
 	if(argc != 2 )
 	{
@@ -42,8 +43,12 @@ int main( int argc, char** argv )
 			//simply create halt function and type in appropriate message
 			//within if to catch each of the four bad halts
 			//perform action
-			
+			//action(op, op_name, address_mode, accumulator,
+				//x0, x1, x2, x3, operand_address, address);
 			//call print function
+			print_line(operand_address, memory[i], op_name, address, accumulator,
+				x0, x1, x2, x3);
+			cout << endl;
 		}
 	}
 	
