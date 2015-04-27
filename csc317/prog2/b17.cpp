@@ -11,6 +11,12 @@ int main( int argc, char** argv )
 	string op;
 	string address_mode;
 	string op_name, address, accumulator;
+	stringstream mem_address;
+
+	for (int i = 0; i < 4096;i++)
+	{
+		memory[i] = "0";
+	}
 	
 	if(argc != 2 )
 	{
@@ -34,20 +40,17 @@ int main( int argc, char** argv )
 			//We need to process each instrtuction as it comes
 			//call the split function
 			split_instruction(memory[i], operand_address, opcode);
-			operand = memory[stoi(operand_address,nullptr,16)];
 			get_op_and_am(opcode, op, address_mode);
 
-			//check the opcode and address mode
-			//must check in this order
-			//halt instruction, undefined opcode, unimplemented opcode,
-			//illegal address mode, unimplemented address mode
-			//simply create halt function and type in appropriate message
-			//within if to catch each of the four bad halts
 			//perform action
-			action(memory, op, op_name, address_mode, accumulator, operand_address, address);
+			mem_address.str(string());
+			mem_address << hex << i;
+			action(memory, op, op_name, address_mode, accumulator, operand_address, address, mem_address.str());
+
+			//check for appropriate addressing mode with op
 
 			//call print function
-			print_line(operand_address, memory[i], op_name, address, accumulator);
+			print_line(mem_address.str(), memory[i], op_name, address, accumulator);
 			cout << endl;
 		}
 	}
