@@ -1,5 +1,5 @@
 #|
-					***** MISSIONARIES.LSP *****
+					***** MISSIONARIES_001.LSP *****
 					
 Missionary and Cannibal Problem:
 	Move all M missionaries and C cannibals from the left side of a river to the
@@ -64,7 +64,9 @@ Modifications:
 	(format t "~%There are ~d missionaries and ~d cannibals.~%~%" m c )
 
 	; check for unsolvable problem instance
-	(when (< m c) (defeat) (return-from m-c "The cannibals have feasted!!!"))
+	(cond
+		((not (= m 0))
+			(when (< m c) (defeat) (return-from m-c "The cannibals have feasted!!!"))))
 
 	; initialize global vars
 	(setf *M* m)

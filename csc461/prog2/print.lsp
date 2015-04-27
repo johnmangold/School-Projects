@@ -9,10 +9,14 @@
 	Returns: None
 |#
 (defun print_mc (state)
-	(format t "left bank    right bank    canoe    last move~%")
-	(format t "---------    ----------    -----    ---------~%")
+	(when (equal (car state) nil)
+		(format t "No solution.")
+		(return-from print_mc nil))
 
-	(format t "~d M, ~d C      0 M, 0 C     ~a     start position~%"
+	(format t "left bank      canoe      right bank    last move~%")
+	(format t "---------    ---------    ----------    ---------~%")
+
+	(format t "~d M, ~d C     |\\_/    |     0 M, 0 C     start position~%"
 		(car (car state)) (cadr (car state)) (caddr (car state)))
 		
 	(setf prev (car state))
@@ -25,16 +29,18 @@
 			(progn
 				(setf mm (- (car prev) (car node)))
 				(setf mc (- (cadr prev) (cadr node)))
-				(format t "~d M, ~d C      ~d M, ~d C     ~a     move ~d M, ~d C left to right~%"
-					(car node) (cadr node) (- *M* (car node)) (- *C* (cadr node)) (caddr node) mm mc)
+				(format t "~d M, ~d C     |    \\_/|     ~d M, ~d C" (car node)
+					(cadr node) (- *M* (car node)) (- *C* (cadr node)))
+				(format t "     move ~d M, ~d C right~%" mm mc)
 			)
 			
 			;right bank
 			(progn
 				(setf mm (- (car node) (car prev)))
 				(setf mc (- (cadr node) (cadr prev)))
-				(format t "~d M, ~d C      ~d M, ~d C     ~a     move ~d M, ~d C right to left~%"
-					(car node) (cadr node) (- *M* (car node)) (- *C* (cadr node)) (caddr node) mm mc)
+				(format t "~d M, ~d C     |\\_/    |     ~d M, ~d C" (car node)
+					(cadr node) (- *M* (car node)) (- *C* (cadr node)))
+				(format t "     move ~d M, ~d C left~%" mm mc)
 			)
 		)
 		(setf prev node)
