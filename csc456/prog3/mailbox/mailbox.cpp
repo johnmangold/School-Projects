@@ -1,20 +1,21 @@
 #include "mailbox.h"
 
-#define SHMKEY 1066
-#define K 1024
+struct mailbox_info
+{
+	int number_of_boxes;
+	int size_of_boxes;
+	int group_shmid;
+};
 
 int main(int argc, char** argv)
 {
+	char *address;
+	int *block_start;
 	int shmid;
+	mailbox_info *info;
 	string input;
 	string command, mbs_num, mbs_size;  //for mboxinit
 	string boxnumber, boxnumber2;  //for mboxwrite, mboxread, mboxcopy
-	
-	/*schmid = shmget(SHMKEY, 10*K, IPC_CREAT | IPC_EXCL | 0666);
-	if(schmid < 0)
-	{
-		cout << "shmget failed" << endl;
-	}*/
 	
 	while(true)
 	{
@@ -23,6 +24,7 @@ int main(int argc, char** argv)
 		
 		if( input.substr(0,8) == "mboxinit")
 		{
+			//parse input for needed information
 			command = input.substr(0,input.find_first_of(" "));
 			input = input.substr(input.find_first_of(" ")+1);
 			
@@ -31,13 +33,24 @@ int main(int argc, char** argv)
 			
 			mbs_size = input;
 			
-			printf("\n%s   %s   %s\n", command.c_str(), mbs_num.c_str(), mbs_size.c_str());
+			//set mailbox info struct
+			info->number_of_boxes = stoi(mbs_num);
+			info->size_of_boxes = stoi(mbs_size);
+			
+			//create shared memory
+			create_memory(shmid, stoi(mbs_num), stoi(mbs_size), address, block_start);
+			
+			//set shmid in info
+			info->group_shmid = shmid;
+			
+			//assign the header to the first block of SM
+			//this isn't working.  pointers.
+			*block_start = *info;
 		}
 		else if( input.substr(0,7) == "mboxdel" )
 		{
-			command = input.substr(0,7);
-			
-			cout << endl << command << endl;
+			delete_mailbox(shmid);
+			cout << endl << "Successfully deleted: " << shmid << endl;
 		}
 		else if( input.substr(0,9) == "mboxwrite" )
 		{
@@ -46,7 +59,7 @@ int main(int argc, char** argv)
 			
 			boxnumber = input.substr(0);
 			
-			printf("\n%s   %s\n", command.c_str(), boxnumber.c_str());
+			cout << endl << write_mailbox(block_start, stoi(boxnumber));
 			
 		}
 		else if( input.substr(0,8) == "mboxread" )

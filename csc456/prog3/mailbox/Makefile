@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-std=c++11 -c -Wall
 LDFLAGS=
-SOURCES=mailbox.cpp
+SOURCES=mailbox.cpp mailbox_functions.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=mailbox
 
