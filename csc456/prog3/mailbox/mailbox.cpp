@@ -24,12 +24,12 @@ int main(int argc, char** argv)
 		if( input.substr(0,8) == "mboxinit")
 		{
 			command = input.substr(0,input.find_first_of(" "));
-			input = input.substr(input.find_first_of(" ")+1,size_t (input.end()));
+			input = input.substr(input.find_first_of(" ")+1);
 			
 			mbs_num = input.substr(0,input.find_first_of(" "));
-			input = input.substr(input.find_first_of(" ")+1,size_t (input.end()));
+			input = input.substr(input.find_first_of(" "));
 			
-			mbs_size = command.substr(0);
+			mbs_size = input;
 			
 			printf("\n%s   %s   %s\n", command.c_str(), mbs_num.c_str(), mbs_size.c_str());
 		}
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 		else if( input.substr(0,9) == "mboxwrite" )
 		{
 			command = input.substr(0,9);
-			input = input.substr(input.find_first_of(" ")+1, input.end());
+			input = input.substr(input.find_first_of(" ") + 1);
 			
 			boxnumber = input.substr(0);
 			
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 		else if( input.substr(0,8) == "mboxread" )
 		{
 			command = input.substr(0,8);
-			input = input.substr(input.find_first_of(" ")+1,input.end());
+			input = input.substr(input.find_first_of(" ") + 1);
 			
 			boxnumber = input.substr(0);
 			
@@ -61,10 +61,10 @@ int main(int argc, char** argv)
 		else if( input.substr(0,8) == "mboxcopy" )
 		{
 			command = input.substr(0,8);
-			input = input.substr(input.find_first_of(" ")+1,input.end());
+			input = input.substr(input.find_first_of(" ") + 1);
 			
 			boxnumber = input.substr(0,input.find_first_of(" "));
-			input = input.substr(input.find_first_of(" ")+1,input.end());
+			input = input.substr(input.find_first_of(" ") + 1);
 			
 			boxnumber2 = input.substr(0);
 			

@@ -63,6 +63,9 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	int temp;
 	stringstream decimal;
 	string opcode;
+	long long big;
+	long long base = 4294967295;
+
 
 	//check and set address portion
 	if (address_mode == "0001")
@@ -96,9 +99,6 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "100000")
 	{
-		long long big;
-		long long base = 4294967295;
-
 		big = stoll(accumulator, nullptr, 16);
 		if (big > INT_MAX)
 		{
@@ -124,6 +124,15 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "110000")
 	{
+
+		if (address_mode == "0001")
+		{
+			address = "???";
+			op_name = "J";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
 		//perform jump
 		address = operand_address;
 		op_name = "J";
@@ -164,6 +173,15 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "010001")
 	{
+		if (address_mode == "0001")
+		{
+			address = "???";
+			op_name = "ST";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
+
 		//perform store
 		address = operand_address;
 		op_name = "ST";
@@ -171,9 +189,6 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "100001")
 	{
-		long long big;
-		long long base = 4294967295;
-
 		big = stoll(accumulator, nullptr, 16);
 		if (big > INT_MAX)
 		{
@@ -199,13 +214,24 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "110001")
 	{
-		//perform jz
-				address = operand_address;
-		op_name = "JZ";
-		print_line(mem_address, memory[stoi(mem_address,nullptr,16)], op_name, address, accumulator);
-
-		if ( stoi(operand_address, nullptr, 16) == stoi("000000", nullptr, 16) )
+		if (address_mode == "0001")
 		{
+			address = "???";
+			op_name = "JZ";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
+
+		//perform jz
+		address = operand_address;
+		op_name = "JZ";
+
+		if ( stoi(accumulator, nullptr, 16) == stoi("000000", nullptr, 16) )
+		{
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl;
+
 			for (int i = stoi(operand_address, nullptr, 16); !memory[i].empty(); i++)
 			{
 				if (!memory[i].empty())
@@ -231,6 +257,15 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "010010")
 	{
+		if (address_mode == "0001")
+		{
+			address = "???";
+			op_name = "EM";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
+
 		//perform em
 		string temp;
 		address = operand_address;
@@ -253,13 +288,31 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "110010")
 	{
+		if (address_mode == "0001")
+		{
+			address = "???";
+			op_name = "JN";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
+
 		//perform jn
 		address = operand_address;
 		op_name = "JN";
-		print_line(mem_address, memory[stoi(mem_address,nullptr,16)], op_name, address, accumulator);
 
-		if ( stoi(operand_address, nullptr, 16) >= stoi("800000", nullptr, 16) )
+		big = stoll(accumulator,nullptr,16);
+		if (big > INT_MAX)
 		{
+			big -= base;
+			big -= 1;
+		}
+
+		if ( big < 0 )
+		{
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl;
+
 			for (int i = stoi(operand_address, nullptr, 16); !memory[i].empty(); i++)
 			{
 				if (!memory[i].empty())
@@ -299,14 +352,31 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 	}
 	else if (op == "110011")
 	{
+		if (address_mode == "0001")
+		{
+			address = "???";
+			op_name = "JP";
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl << "Machine Halted - illegal addressing mode" << endl;
+			exit(EXIT_SUCCESS);
+		}
+
 		//perform jp
 		address = operand_address;
 		op_name = "JP";
-		print_line(mem_address, memory[stoi(mem_address,nullptr,16)], op_name, address, accumulator);
 
-		if ( stoi(operand_address, nullptr, 16) <= stoi("7fffff", nullptr, 16) &&
-				stoi(operand_address, nullptr, 16) > stoi("000000", nullptr, 16) )
+		big = stoll(accumulator, nullptr, 16);
+		if (big > INT_MAX)
 		{
+			big -= base;
+			big -= 1;
+		}
+
+		if (big > 0)
+		{
+			print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+			cout << endl;
+
 			for (int i = stoi(operand_address, nullptr, 16); !memory[i].empty(); i++)
 			{
 				if (!memory[i].empty())
@@ -444,6 +514,22 @@ void action(vector<string> &memory, string op, string &op_name, string address_m
 		address = operand_address;
 		print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
 		cout << endl << "Machine Halted - undefined opcode" << endl;
+		exit(EXIT_SUCCESS);
+	}
+
+	if (address_mode != "0010" && address_mode != "0100" && address_mode != "0110" && address_mode != "0001" && address_mode != "0000")
+	{
+		address = "???";
+		print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+		cout << endl << "Machine Halted - illegal addressing mode" << endl;
+		exit(EXIT_SUCCESS);
+	}
+
+	if (address_mode == "0010" || address_mode == "0100" || address_mode == "0110")
+	{
+		address = "???";
+		print_line(mem_address, memory[stoi(mem_address, nullptr, 16)], op_name, address, accumulator);
+		cout << endl << "Machine Halted - unimplemented addressing mode" << endl;
 		exit(EXIT_SUCCESS);
 	}
 }
