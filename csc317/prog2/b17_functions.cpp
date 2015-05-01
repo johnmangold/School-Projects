@@ -51,15 +51,11 @@ void print_line(string address, string instruction, string op_name, string addre
 		accumulator_hex.resize(6);
 	}
 
-	printf("%03s:  %06s  %-4s  %s  AC[%06s]  X0[%03d]  X1[%03d]  X2[%03d]  X3[%03d]", address.c_str(), instruction.c_str(), op_name.c_str(), address_mode.c_str(), accumulator_hex.c_str(), 0, 0, 0, 0);
+	printf("%03x:  %06x  %-4s  %s  AC[%06x]  X0[%03d]  X1[%03d]  X2[%03d]  X3[%03d]", stoi(address,nullptr,16), stoi(instruction,nullptr,16), op_name.c_str(), address_mode.c_str(), stoi(accumulator_hex,nullptr,16), 0, 0, 0, 0);
 }
 
 void action(vector<string> &memory, string op, string &op_name, string address_mode, string &accumulator, string operand_address, string &address, string mem_address)
 {
-	//andrew: nop, or, xor, clr, and, com
-	//yan: j, jp, jn, jz
-	//john: st, em, sub, 
-
 	int temp;
 	stringstream decimal;
 	string opcode;
