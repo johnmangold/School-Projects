@@ -4,7 +4,7 @@ struct mailbox_info
 {
 	int number_of_boxes;
 	int size_of_boxes;
-	int group_shmid;
+	string message;
 };
 
 int main(int argc, char** argv)
@@ -34,23 +34,19 @@ int main(int argc, char** argv)
 			mbs_size = input;
 			
 			//set mailbox info struct
-			info->number_of_boxes = stoi(mbs_num);
-			info->size_of_boxes = stoi(mbs_size);
+			//info->number_of_boxes = stoi(mbs_num);
+			//info->size_of_boxes = stoi(mbs_size);
 			
 			//create shared memory
 			create_memory(shmid, stoi(mbs_num), stoi(mbs_size), address, block_start);
-			
-			//set shmid in info
-			info->group_shmid = shmid;
-			
-			//assign the header to the first block of SM
-			//this isn't working.  pointers.
-			*block_start = *info;
+
 		}
 		else if( input.substr(0,7) == "mboxdel" )
 		{
-			delete_mailbox(shmid);
-			cout << endl << "Successfully deleted: " << shmid << endl;
+			if (delete_mailbox(shmid) == true)
+			{
+				cout << "Will be deleted once last process detaches from " << shmid << endl;
+			}
 		}
 		else if( input.substr(0,9) == "mboxwrite" )
 		{
@@ -59,7 +55,7 @@ int main(int argc, char** argv)
 			
 			boxnumber = input.substr(0);
 			
-			cout << endl << write_mailbox(block_start, stoi(boxnumber));
+			cout << endl << write_mailbox(block_start, stoi(boxnumber), stoi(mbs_size));
 			
 		}
 		else if( input.substr(0,8) == "mboxread" )

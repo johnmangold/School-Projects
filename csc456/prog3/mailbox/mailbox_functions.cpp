@@ -5,15 +5,15 @@ using namespace std;
 bool create_memory(int &shmid, int mb_num, int mb_size, char *address, int *start)
 {
 	//create shared memory block using info
-	shmid = shmget(SHMKEY, mb_num*mb_size, IPC_CREAT | IPC_EXCL | 0666);
-	
-	//check that shared memory created successfully
-	if(shmid < 0)
+	shmid = shmget(SHMKEY, (mb_num+1)*mb_size, IPC_CREAT | IPC_EXCL | 0666 );
+	if( shmid < 0 )
 	{
-		cout << "\nMailbox already exists.\n"
-			<< "Either delete old mailbox or proceed to use current mailbox.\n";
-			
-		return false;
+		shmid = shmget(SHMKEY, 0, 0 );
+		if( shmid < 0 )
+		{
+			cout << "Couldn't get shmid.\n";
+			exit(EXIT_SUCCESS);
+		}
 	}
 	
 	//attach shared memory to process
@@ -37,11 +37,17 @@ bool delete_mailbox(int shmid)
 	}
 }
 
-bool write_mailbox(int *start, int mb_num)
+bool write_mailbox(int *start, int mb_num, int mb_size)
 {
-	*(start + 1) = 55;
+	cout << endl << "test 1" << endl;
+
+	*start = 55;
 	
-	cout << endl << *(start + 1) << endl;
+	cout << endl << "test 2" << endl;
+	
+	cout << endl << *start << endl;
+	
+	cout << endl << "test 3" << endl;
 	
 	return true;
 }
