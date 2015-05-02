@@ -1,21 +1,11 @@
 #include "mailbox.h"
 
-struct mailbox_info
-{
-	int number_of_boxes;
-	int size_of_boxes;
-	string message;
-};
-
 int main(int argc, char** argv)
 {
-	char *address;
-	int *block_start;
-	int shmid;
-	mailbox_info *info;
 	string input;
 	string command, mbs_num, mbs_size;  //for mboxinit
 	string boxnumber, boxnumber2;  //for mboxwrite, mboxread, mboxcopy
+	vector<int> ids;
 	
 	while(true)
 	{
@@ -32,20 +22,24 @@ int main(int argc, char** argv)
 			input = input.substr(input.find_first_of(" "));
 			
 			mbs_size = input;
-			
-			//set mailbox info struct
-			//info->number_of_boxes = stoi(mbs_num);
-			//info->size_of_boxes = stoi(mbs_size);
+			//make size in kilobytes
+			mbs_size = to_string(stoi(mbs_size)*1024);
 			
 			//create shared memory
-			create_memory(shmid, stoi(mbs_num), stoi(mbs_size), address, block_start);
-
+			if(create_memory(ids, stoi(mbs_num), stoi(mbs_size)) == true)
+			{
+				cout << "Mailboxes created successfully." << endl;
+			}
+			else
+			{
+				cout << "Mailboxes already exists." << endl;
+			}
 		}
 		else if( input.substr(0,7) == "mboxdel" )
 		{
-			if (delete_mailbox(shmid) == true)
+			if (delete_mailbox() == true)
 			{
-				cout << "Will be deleted once last process detaches from " << shmid << endl;
+				cout << "All mailboxes will be deleted upon exit." << endl;
 			}
 		}
 		else if( input.substr(0,9) == "mboxwrite" )
@@ -55,7 +49,7 @@ int main(int argc, char** argv)
 			
 			boxnumber = input.substr(0);
 			
-			cout << endl << write_mailbox(block_start, stoi(boxnumber), stoi(mbs_size));
+			write_mailbox(stoi(boxnumber));
 			
 		}
 		else if( input.substr(0,8) == "mboxread" )
@@ -77,7 +71,8 @@ int main(int argc, char** argv)
 			
 			boxnumber2 = input.substr(0);
 			
-			printf("\n%s   %s   %s\n", command.c_str(), boxnumber.c_str(), boxnumber2.c_str());
+			copy_mailbox(stoi(boxnumber), stoi(boxnumber2));
+			
 		}
 		else if(input == "exit" || input == "Exit" )
 		{
