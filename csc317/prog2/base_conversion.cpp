@@ -1,5 +1,12 @@
 #include "b17.h"
 
+/************************************************************************
+Function: string hex_to_bin(string hex)
+Author: Andrew Housh
+Description: changes a hex number string to a binary number string
+Parameters: string hex - in - string representation of a hex number
+			string bin - out - string representation of a binary number
+************************************************************************/
 string hex_to_bin( string hex ) {
     string bin;
 
@@ -26,6 +33,13 @@ string hex_to_bin( string hex ) {
 }
 
 
+/************************************************************************
+Function: string bin_to_hex(string bin)
+Author: Andrew Housh
+Description: changes a binary number string to a hex number string
+Parameters: string bin - in - string representation of a binary number
+string hex - out - string representation of a hex number
+************************************************************************/
 string bin_to_hex( string bin ) {
     string temp;
     string hex;

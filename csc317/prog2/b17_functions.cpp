@@ -1,5 +1,14 @@
 #include "b17.h"
 
+/************************************************************************
+Function: string parse_file(ifstream &fin, vector<string> &mem)
+Author: John Mangold
+Description: reads through input file one line at a time and places information
+			into a vector used to simulate memory
+Parameters: ifstream &fin - in - ifstream for reading the file
+			vector<string> &mem - out - array used to simulate memory
+			string start_address - address to begin executing instructions
+************************************************************************/
 string parse_file(ifstream &fin, vector<string> &mem)
 {
 	string line;
@@ -44,6 +53,16 @@ string parse_file(ifstream &fin, vector<string> &mem)
 	return start;
 }
 
+/************************************************************************
+Function: void print_line(string address, string instruction, string op_name, string address_mode, string accumulator_hex)
+Author: John Mangold
+Description: Prints a properly formatted line to the screen.
+Parameters: string address - in - address of instruction being executed
+			string instruction - in - hex instruction executed
+			string op_name - in - name of operation executed
+			string address_mode - in - address of operand or address mode
+			string accumulator_hex - in - string representation of hex number accumulator
+************************************************************************/
 void print_line(string address, string instruction, string op_name, string address_mode, string accumulator_hex)
 {
 	if (accumulator_hex.size() > 6)
@@ -54,6 +73,14 @@ void print_line(string address, string instruction, string op_name, string addre
 	printf("%03x:  %06x  %-4s  %s  AC[%06x]  X0[%03d]  X1[%03d]  X2[%03d]  X3[%03d]", stoi(address,nullptr,16), stoi(instruction,nullptr,16), op_name.c_str(), address_mode.c_str(), stoi(accumulator_hex,nullptr,16), 0, 0, 0, 0);
 }
 
+/************************************************************************
+Function: void action(vector<string> &memory, string op, string &op_name, string address_mode, string &accumulator, string operand_address, string &address, string mem_address)
+Author: John Mangold, Andrew Housh, Jiasong Yan
+Description: 
+Parameters: ifstream &fin - in - ifstream for reading the file
+vector<string> &mem - out - array used to simulate memory
+string start_address - address to begin executing instructions
+************************************************************************/
 void action(vector<string> &memory, string op, string &op_name, string address_mode, string &accumulator, string operand_address, string &address, string mem_address)
 {
 	int temp;

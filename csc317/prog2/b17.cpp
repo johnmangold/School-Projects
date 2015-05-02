@@ -1,5 +1,40 @@
+/************************************************************************
+Program: Prog 2
+Author: John Mangold, Andrew Housh, Jiasong Yan
+Class: CSC317
+Instructor: Dr. Krister Karlsson
+Date: 1 May 2015
+Description:    This program is to simulate an assembly processor.  It will read in
+a file and perform the necessary action.  It will recognize improper addressing modes
+and halt the program.
+Input: 
+Output:
+Compilation instructions: compiles per usual.
+Usage: ./b17 file.obj
+Known bugs/missing features: None
+Modifications:
+Date                Comment
+----    ------------------------------------------------
+04/09/2015    Assign each member the starting work with parsing input file, 
+	conversion between hex and binary string, and reference table of 
+	address modes.
+04/19/2015    Combine each member's code and implement several instruction 
+	functions.
+04/23/2015    Figure out the specific function for each instruction.
+05/01/2015    Test the whole code and finish all the documentation.
+************************************************************************/
+
 #include "b17.h"
 
+/************************************************************************
+Function: int main (int argc, char** argv)
+Author: John Mangold
+Description: Handles necessary function calls.
+Parameters: int argc - in - count of arguments
+			char** argv - in - array of arguments
+
+			returns 0 - ran successfully
+************************************************************************/
 int main( int argc, char** argv )
 {
 	vector<string> memory(4096);
