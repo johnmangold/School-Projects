@@ -29,10 +29,13 @@ bool create_memory(vector<int> &ids, int mb_num, int mb_size)
 	//assign size then shmids in sequential order in first block
 	*start = mb_size;
 	
-	for( unsigned int i = 1; i < ids.size(); i++)
+	for( unsigned int i = 1; i <= ids.size(); i++)
 	{
-		*(start+i) = ids[i];
+		*(start+i) = ids[i-1];
 	}
+	
+	ids.clear();
+	shmdt(address);
 	
 	return true;
 }
@@ -51,6 +54,8 @@ bool delete_mailbox()
 		shmctl(*(start+i), IPC_RMID, 0);
 	}
 	
+	shmdt((char *) start);
+	
 	return true;
 }
 
@@ -59,36 +64,47 @@ bool write_mailbox(int mb_num)
 	char c;
 	char *data;
 	int shmid;
+	int shmid1;
 	int *start;
-	int size;
+	unsigned int size;
 	int count = 0;
+	string s;
 	
 	//get shmid and size for appropriate mailbox
 	//start+(mb_num+2)
 	shmid = shmget(SHMKEY, 0, 0);
 	start = (int *) shmat(shmid, 0, 0);
 	size = *start;
-	shmid = *(start+(mb_num+2));
+	for(int i = 0; i < mb_num+2;i++)
+	{
+		shmid1 = *(start+i);
+	}
+	
+	shmdt((char *) start);
 	
 	//attach to desired mailbox
-	data = (char *) shmat(shmid, 0, 0);
+	data = (char *) shmat(shmid1, 0, 0);
+	if( data == (char *) -1)
+	{
+		cout << endl << "that didn't work" << endl;
+	}
 	
 	//while input and not bigger than mailbox size
 	//ctrl-d breaks this thing.  don't know why.  because programming.
 	cout << "Enter data below.  Ctrl-d to stop.\n";
-	while( (c = getchar()) )
+	getline(cin, s);
+	
+	if( s.size() >= size )
 	{
-		if( c == char_traits<char>::eof() )
-		{
-			break;
-		}
-		*(data + count) = c;
-		count++;
-		if( count >= size )
-		{
-			break;
-		}
+		s = s.substr(0,size);
 	}
+
+	for(unsigned int i = 0; i < s.size(); i++)
+	{
+		*(data+i) = s[i];
+	}
+	
+	shmdt(data);
 	
 	return true;
 }
@@ -107,8 +123,18 @@ bool copy_mailbox(int mb_num1, int mb_num2)
 	shmid = shmget(SHMKEY, 0, 0);
 	start = (int *) shmat(shmid, 0, 0);
 	size = *start;
-	shmid1 = *(start+(mb_num1+2));
-	shmid2 = *(start+(mb_num2+2));
+	
+	for(int i = 0; i < mb_num1+2;i++)
+	{
+		shmid1 = *(start+i);
+	}
+	
+	for(int i = 0; i < mb_num2+2;i++)
+	{
+		shmid2 = *(start+i);
+	}
+	
+	shmdt((char *) start);
 	
 	//attach to both mailboxes
 	start1 = (char *) shmat(shmid1, 0, 0);
@@ -119,6 +145,9 @@ bool copy_mailbox(int mb_num1, int mb_num2)
 	{
 		*(start2+i) = *(start1+i);
 	}
+	
+	shmdt(start1);
+	shmdt(start2);
 
 	return true;
 }
@@ -136,7 +165,12 @@ bool read_mailbox(int mb_num)
 	shmid = shmget(SHMKEY, 0, 0);
 	start = (int *) shmat(shmid, 0, 0);
 	size = *start;
-	shmid1 = *(start+(mb_num+2));
+	for(int i = 0; i < mb_num+2;i++)
+	{
+		shmid1 = *(start+i);
+	}
+	
+	shmdt((char *) start);
 	
 	//attach to mailbox
 	read = (char *) shmat(shmid1, 0, 0);
@@ -147,6 +181,10 @@ bool read_mailbox(int mb_num)
 		cout << *(read+count);
 		count++;
 	}
+	
+	cout << endl;
+	
+	shmdt(read);
 	
 	return true;
 }

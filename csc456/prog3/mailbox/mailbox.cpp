@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 			
 			boxnumber = input.substr(0);
 			
-			printf("\n%s   %s\n", command.c_str(), boxnumber.c_str());
+			read_mailbox(stoi(boxnumber));
 		}
 		else if( input.substr(0,8) == "mboxcopy" )
 		{
